@@ -18,6 +18,7 @@ const Chat = () => {
       auth: {
         token: token,
       },
+      withCredentials: true,
       transports:['websocket','polling'],
     });
 
