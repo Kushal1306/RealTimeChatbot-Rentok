@@ -15,7 +15,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+
+const corsOptions={
+    origin: 'https://chatbot-rentok-rtc.vercel.app',
+    methods:['GET','POST'],
+    credentials:true
+};
+app.use(cors(corsOptions));
 
 app.use(mainRouter);
 
@@ -23,7 +29,13 @@ app.get("/",async(req,res)=>{
     res.send("Hello");
 })
 const server=http.createServer(app);
-setupSocket(server);
+
+const io=new Server(server,{
+    cors:corsOptions,
+    transports:['websocket','polling']
+});
+
+setupSocket(io);
 
 
 connectToDB()

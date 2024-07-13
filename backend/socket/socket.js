@@ -2,14 +2,9 @@ import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { createConversationChain, executor } from '../conversation/conversationMiddleWare.js'; 
 import { parseResponse } from '../conversation/ParseResponses.js';
+import cors from 'cors';
 
-const setupSocket=(server)=>{
-    const io = new Server(server, {
-        cors: {
-          origin: '*',
-          methods: ['GET', 'POST']
-        }
-      });
+const setupSocket=(io)=>{
       io.use((socket, next) => {
         const token = socket.handshake.auth.token;
         if (token) {

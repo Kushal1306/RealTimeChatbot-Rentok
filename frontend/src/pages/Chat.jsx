@@ -14,10 +14,11 @@ const Chat = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    socket.current = io('https://rentok-asg-backend.vercel.app/', {
+    socket.current = io('https://rentok-asg-backend.vercel.app', {
       auth: {
         token: token,
       },
+      transports:['websocket','polling'],
     });
 
     socket.current.on('receiveMessage', (message) => {
