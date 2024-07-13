@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 const corsOptions={
-    origin: 'https://chatbot-rentok-rtc.vercel.app',
+    origin: '*',
     methods:['GET','POST'],
     credentials:true
 };
