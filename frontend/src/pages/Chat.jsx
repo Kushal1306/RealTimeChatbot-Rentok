@@ -14,9 +14,7 @@ const Chat = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const socketUrl = `${protocol}://rentok-asg-backend.vercel.app`;
-    socket.current = io(socketUrl, {
+    socket.current = io(`https://realtimechatbot-rentok.onrender.com/`, {
       auth: {
         token: token,
       },
