@@ -18,7 +18,7 @@ function Signup() {
 
   const handleSignup=async()=>{
     try { 
-     const response= await axios.post("https://rentok-asg-backend.vercel.app/user/signup",{
+     const response= await axios.post("https://realtimechatbot-rentok.onrender.com/user/signup",{
         userName,
         password,
         firstName,
@@ -37,7 +37,7 @@ function Signup() {
     try {
         const decoded=jwtDecode(credentialResponse.credential);
         console.log(decoded);
-        const response=await axios.post("https://rentok-asg-backend.vercel.app/user/goole-signin",{
+        const response=await axios.post("https://realtimechatbot-rentok.onrender.com/user/goole-signin",{
             token:credentialResponse.credential,
         });
         localStorage.setItem("token",response.data.token);
