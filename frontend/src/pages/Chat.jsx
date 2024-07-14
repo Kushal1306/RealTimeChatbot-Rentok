@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { User, Send, Speech } from 'lucide-react';
+import { User, Send, Speech, Loader } from 'lucide-react';
 import rentok from '../assets/rentok.jpg'
 import { io } from 'socket.io-client';
 
@@ -91,14 +91,18 @@ const Chat = () => {
 
   const handleVoiceTranscript = (transcript) => {
     const newMessage = { user: 'You', type: 'text', text: transcript };
-    setMessages([...messages, newMessage]);
+    // setMessages([...messages, newMessage]);
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+
+    setLoading(true);
     socket.current.emit('sendMessage', newMessage.text);
   };
 
   const handleSend = () => {
     if (input.trim()) {
       const newMessage = { user: 'You', type: 'text', text: input };
-      setMessages([...messages, newMessage]);
+      // setMessages([...messages, newMessage]);
+      setMessages(prevMessages => [...prevMessages, newMessage]);
       setInput('');
       setLoading(true);
       socket.current.emit('sendMessage', newMessage.text);
@@ -163,15 +167,15 @@ const Chat = () => {
       <div ref={chatContainer} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => renderMessage(msg, index))}
         {Loading && (
-          <div className="flex items-start mb-4">
-            <img src={rentok} alt="Bot" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3 flex-shrink-0" />
-            <div className="bg-white shadow-md rounded-lg p-2 sm:p-3">
-              <p className="text-sm sm:text-base">Loading Response..</p>
-            </div>
-          </div>
+           <div className="flex items-start mb-4">
+           <img src={rentok} alt="Bot" className="w-10 h-10 rounded-full mr-3 flex-shrink-0" />
+           <div className="bg-white shadow-md rounded-lg p-4">
+             <p className="text-base">Loading response...</p>
+           </div>
+         </div>
         )}
       </div>
-      <div className="p-4 bg-white border-t flex items-center">
+      <div className="p-4 bg-white border-t flex items-center sticky bottom-0">
         <input
           type="text"
           value={input}
