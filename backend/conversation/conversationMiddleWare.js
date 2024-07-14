@@ -112,6 +112,7 @@ const vectorStore = await MemoryVectorStore.fromDocuments(
 );
 async function getVideoRecommendation(query) {
     const results = await vectorStore.similaritySearch(query, 1);
+    console.log(results);
     if (results.length > 0) {
       const video = results[0];
       return {
@@ -156,6 +157,8 @@ const prompt = ChatPromptTemplate.fromMessages([
         `You are Rentok, an AI assistant.You answer user queries. You assist users on Issues related to Rentok. Follow these guidelines strictly:
         1. Always check for greetings or thanks first using the GreetingAndThanking tool.
         2. If it's not a greeting/thanks and the user asks for guidance or instructions, use the GetVideoRecommendation tool.
+           - Donot provide url by your own. Only provide if theres match in recommendation tool
+           - Please donot modify url
            - If a video is found, respond with the text provided by the tool, followed by the URL on a new line.
            - If no video is found, provide a general response about how you can help.
         3. For all other queries about Rentok just ask further
@@ -207,7 +210,7 @@ export const createConversationChain = (userId) => {
     memoryKey: 'chat_history',
     inputKey: 'input',
     outputKey: 'output',
-    memorySize: 3,
+    memorySize: 1,
   });
 
   return new ConversationChain({
