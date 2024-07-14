@@ -123,7 +123,7 @@ async function getVideoRecommendation(query) {
   }
   
 
-// Updated Tools
+// Tools
 const tools = [
     new DynamicTool({
         name: 'GetVideoRecommendation',
@@ -207,7 +207,7 @@ export const createConversationChain = (userId) => {
     memoryKey: 'chat_history',
     inputKey: 'input',
     outputKey: 'output',
-    memorySize: 1,
+    memorySize: 3,
   });
 
   return new ConversationChain({
