@@ -1,4 +1,7 @@
-This repository contains Fullstack code for Real-Time-Chat Conversation
+This repository contains code for the Real-Time Chat Application, which involves the use of Socket.io and agents. The application answers the user query. It also recommends video if required based on the question asked.
+
+Frontend Url: https://chatbot-rentok-rtc.vercel.app
+Backend Url: https://realtimechatbot-rentok.onrender.com
 
 ### Tech Stack & Frameworks Used
 - **React.js**
@@ -78,5 +81,176 @@ npm run dev
 3. We store both Users's input and our severs response into the our Database
 4. We can also limit the access to no of previous conversation here.
 
+### Sequence Flow
 
+![alt text](<Untitled diagram-2024-07-14-004021.png>)
+
+
+### Database Shcemas
+
+#### Users Shcema
+
+````userName:{type:String, required:true, unique:true},
+    password:{type:String},
+    firstName:{
+        type:String
+    },
+    lastName:{
+        type:String
+    },
+    googleId:{
+        type:String
+    },
+    picture: { 
+        type: String
+    }
+````
+
+####    Conversation Schema/chat History
+
+```
+sessionId: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  messages: [chatMessageSchema]
+````
+````
+  where ChatMessage is
+
+   type: {
+    type: String,
+    required: true,
+    enum: ['human', 'ai']
+  },
+  data: {
+    content: {
+      type: String,
+      required: true
+    },
+    additional_kwargs: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {}
+    }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+````
+
+## API Endpoints
+
+## Users
+
+### Post a User (Signup)
+- **Endpoint**: `/user/signup`
+- **Request Body** 
+````
+{
+    "firstName":"Kushal",
+    "lastName":"Kushal"
+    "email":"kalakushal.jain@gmail.com",
+    "password":"kushal@789"
+}
+````
+- **Response**
+````
+{
+    "message": "User Signed Up Succesfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njc3ZTNjYWJiN2JmMzY3YTNkMzkxNzUiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxOTMxNzY2NSwiZXhwIjoxNzIxOTA5NjY1fQ.PHNOy-Cfeyx8U3t2pLXoMv_X3ONwB57iKZ1C8g_aOLA"
+}
+````
+### Post a User (Signin)/
+- **Endpoint**: `/user/signin`
+- **Request Body** 
+```` json object
+{
+    "email":"kalakushal.jain@gmail.com",
+    "password":"kushal@789"
+}
+````
+- **Response**
+````
+{
+    "message": "User Signedin Succesfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njc3ZTNjYWJiN2JmMzY3YTNkMzkxNzUiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxOTMxNzY2NSwiZXhwIjoxNzIxOTA5NjY1fQ.PHNOy-Cfeyx8U3t2pLXoMv_X3ONwB57iKZ1C8g_aOLA"
+}
+````
+
+### Below are endpoints related to Socket Server: sending & receiving messages
+
+### For  Initial Handshake (GET)
+- **Endpoint**: `/socket.io/?EIO=4&transport=polling`
+
+- **Response**
+````
+{
+    "sid":"D6hjdG2n_faEcDoLAAAE",
+    "upgrades":["websocket"],
+    "pingInterval":25000,
+    "pingTimeout":20000,
+    "maxPayload":1000000
+}
+````
+
+### Authentication (Post)
+- **Endpoint**: `/socket.io/?EIO=4&transport=polling sid=<SESSION_ID>`
+- **Request Body** 
+```` json object
+42["auth",{"token":"your_auth_token_here"}]
+````
+- **Response**
+````
+{
+    "OK"
+}
+````
+
+### Send a message (Post)
+- **Endpoint**: `/socket.io/?EIO=4&transport=polling&sid=<SESSION_ID>
+`
+- **Request Body** 
+```` json object
+42[
+    "sendMessage",{"text":"Hii"}
+]
+````
+- **Response**
+````
+"OK"
+````
+
+### Receive Message (GET)
+- **Endpoint**: `/socket.io/?EIO=4&transport=polling&sid=<SESSION_ID>`
+
+- **Response**
+````
+42["newMessage",{"text":"How can i assist you?","timestamp":1625097600000}]
+
+````
+
+## Deployment:
+-**Frontend Is deployed on vercel**
+-**Backend is deployed on render as vercel doesnt support socket.io applications properly**
+
+### Instructions to deploy
+-**On Both Platforms Connect the platform to our Git Repository
+and we should select a respository and path required**
+-**The application will deployed after filling necessarly commands like build and start**
+-**we also need to fill .env's**
+-**Our application will be deployed and also will be rebuilt
+if there are any changes in our repository**
+
+
+### Topics Explored
+1. WebSockets (socket.io)
+2. Agent & tools
+
+
+## Refferences
+1.Creating Custom Agents: https://js.langchain.com/v0.1/docs/modules/agents/how_to/custom_agent/
+
+2. https://python.langchain.com/v0.2/docs/integrations/memory/mongodb_chat_message_history/
 
